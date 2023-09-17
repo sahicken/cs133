@@ -1,4 +1,5 @@
 #include "dlist.hpp"
+#include <iostream>
 
 	void
 dlist::remove(node* which)
@@ -6,7 +7,8 @@ dlist::remove(node* which)
 	if (which!=nullptr) {
 		if (which==head()) {
 			_head=which->next;
-			which->next->prev=nullptr;
+			if (which->next!=nullptr)
+				which->next->prev=nullptr;
 		} else if (which==tail()) {
 			_tail=which->prev;
 			which->prev->next=nullptr;
@@ -14,6 +16,10 @@ dlist::remove(node* which)
 			which->prev->next=which->next;
 			which->next->prev=which->prev;
 		}
+		if(head()==nullptr)
+			_tail=nullptr;
+		if(tail()==nullptr)
+			_head=nullptr;
 		delete which;
 	}
 }
@@ -39,8 +45,8 @@ dlist::insert(node* previous, int value)
 		n->prev=previous;
 		n->next=previous->next;
 		previous->next=n;
-		n->next->prev=n;
 		if (tail()==n->prev) _tail=n;
+		else n->next->prev=n;
 	}
 }
 
@@ -55,8 +61,11 @@ dlist::push_front(int value)
 {
 	node* n=new node{value,nullptr,nullptr};
 	n->next=head();
-	n->next->prev=n;
+	if (n->next!=nullptr)
+		n->next->prev=n;
 	_head=n;
+	if(tail()==nullptr)
+		_tail=head();
 }
 
 int
@@ -95,6 +104,11 @@ bool operator== (const dlist& a, const dlist& b)
 	dlist::node* i = a.head();
 	dlist::node* j = b.head();
 	while (i!=a.tail()||j!=b.tail()) {
+		if(i==nullptr||j==nullptr) {
+			if (i!=nullptr||j!=nullptr)
+				equals=false;
+			break;
+		}
 		if(i->value!=j->value) {
 			equals=false;
 			break;
@@ -109,17 +123,26 @@ bool operator== (const dlist& a, const dlist& b)
 dlist operator+ (const dlist& a, const dlist& b)
 {
 	dlist dl = dlist();
-	for(auto i=a.head();i!=a.tail();i=i->next)
-		dl.push_back(i->value);
-	for(auto j=b.head();j!=b.tail();j=j->next)
-		dl.push_back(j->value);
+	if (a.head()!=nullptr) {
+		for(auto i=a.head();i!=a.tail();i=i->next)
+			dl.push_back(i->value);
+		dl.push_back(a.tail()->value);
+	}
+	if (b.head()!=nullptr) {
+		for(auto j=b.head();j!=b.tail();j=j->next)
+			dl.push_back(j->value);
+		dl.push_back(b.tail()->value);
+	}
 	return dl;
 }
 
 dlist reverse(const dlist& l)
 {
 	dlist dl = dlist();
-	for(auto i=l.head();i!=l.tail();i=i->next)
-		dl.push_front(i->value);
+	if (l.head()!=nullptr) {
+		for(auto i=l.head();i!=l.tail();i=i->next)
+			dl.push_front(i->value);
+		dl.push_front(l.tail()->value);
+	}
 	return dl;
 }
