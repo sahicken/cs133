@@ -9,8 +9,18 @@
    otherwise it should be descending.
    */
 void merge(int* input, int size, int* output, bool output_asc) {
-	// Your merge implementation goes here
-	// this is where the comparison operations go
+	int i; int j; int k;
+	if (output_asc) {
+		for (i=0,j=size-1,k=0;k<size;++k) {
+			if (input[i]<input[j]) output[k]=input[i++];
+			else output[k]=input[j--]; 
+		}
+	} else {
+		for (i=j=size/2,k=0;k<size;++k) {
+			if (input[i-1]>input[j]) output[k]=input[i--];
+			else output[k]=input[j++]; 
+		}
+	}
 }
 
 /* mergesort(input, size, output, asc)
@@ -29,8 +39,8 @@ void mergesort(int* input, int size, int* output, bool output_asc) {
 		return;
 	} else {
 		int mid = size/2;
-		mergeSort(input, mid, output, true); // left side asc
-		mergeSort(input[mid], mid, output[mid], false); // right side desc
+		mergesort(input, mid, &output[mid], true); // left side asc
+		mergesort(&input[mid], mid, output, false); // right side desc
 	}
 	merge(input, size, output, output_asc);
 }
@@ -40,8 +50,8 @@ void mergesort(int* input, int size, int* output, bool output_asc) {
    algorithm. Output is returned as a newly allocated array, which the caller
    is responsible for freeing.
    */
-int* mergesort(int* input, int size) {
+/*int* mergesort(int* input, int size) {
 	int* output = new int[size];
 	mergesort(input, size, output, true);
 	return output;
-}
+}*/
