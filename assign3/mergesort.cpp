@@ -13,12 +13,12 @@ void merge(int* input, int size, int* output, bool output_asc) {
 	if (output_asc) {
 		for (i=0,j=size-1,k=0;k<size;++k) {
 			if (input[i]<input[j]) output[k]=input[i++];
-			else output[k]=input[j--]; 
+			else output[k]=input[j--];
 		}
 	} else {
-		for (i=j=size/2,k=0;k<size;++k) {
-			if (input[i-1]>input[j]) output[k]=input[i--];
-			else output[k]=input[j++]; 
+		for (i=0,j=size-1,k=size-1;k>=0;--k) {
+			if (input[i]<input[j]) output[k]=input[i++];
+			else output[k]=input[j--];
 		}
 	}
 }
@@ -35,23 +35,12 @@ void mergesort(int* input, int size, int* output, bool output_asc) {
 	// recursion parameter
 	if (size==0) return; // base case 0
 	else if (size==1) { // base case 1
-		output=input;
+		output[0]=input[0];
 		return;
 	} else {
-		int mid = size/2;
-		mergesort(input, mid, &output[mid], true); // left side asc
-		mergesort(&input[mid], mid, output, false); // right side desc
+		mergesort(input, size/2, output, true);
+		mergesort(input+size/2, size-size/2, output+size/2, false);
+		for(int i=0; i<size;++i) input[i]=output[i];
+		merge(input, size, output, output_asc);
 	}
-	merge(input, size, output, output_asc);
 }
-
-/* mergesort(input, size)
-   Sorts size elements in the array pointed to by input, using the MergeSort
-   algorithm. Output is returned as a newly allocated array, which the caller
-   is responsible for freeing.
-   */
-/*int* mergesort(int* input, int size) {
-	int* output = new int[size];
-	mergesort(input, size, output, true);
-	return output;
-}*/
