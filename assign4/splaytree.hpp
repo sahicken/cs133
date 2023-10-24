@@ -16,20 +16,14 @@ class splay_tree {
         node* parent;
     };
 
-    ~splay_tree()
-    {
-        clear();
-    }
+    ~splay_tree() { clear(); }
 
     /* root()
        Returns the root of the tree. 
 
        Runs in O(1) time.
     */
-    node* root() const
-    {
-        return rt;
-    }
+    node* root() const { return rt; }
 
     /* size()
        Returns the size (total number of nodes) in the tree. 
@@ -38,8 +32,16 @@ class splay_tree {
     */
     int size() const
     {
-        // Remove the next line and add your code here.
-        throw std::logic_error("Not implemented");
+        if (empty()) return 0;
+        else {
+            int sz=0;
+            auto n=root();
+            if(n->left!=nullptr) size();
+            else if(n->right!=nullptr) size();
+            else ++sz;
+            return sz;
+        }
+
     }
 
     /* empty()
@@ -47,11 +49,7 @@ class splay_tree {
 
        Runs in O(1) time.
     */
-    bool empty() const
-    {
-        // Remove the next line and add your code here.
-        throw std::logic_error("Not implemented");
-    }
+    bool empty() const { return rt==nullptr; }
 
     /* rotate(c,p)
        Rotate child node c with parent node p. c must be a child of p
@@ -135,19 +133,13 @@ class splay_tree {
     /* set_root(n)
        Replaces the root node with n; this is only used for testing.
     */
-    void set_root(node* n)
-    {
-        rt = n;
-    }
+    void set_root(node* n) { rt = n; }
 
     /* clear()
        Delete all nodes in the tree. You should implement the recursive 
        `clear(node*)` version below, and not modify this one.
     */
-    void clear() 
-    {
-        clear(rt);
-    }
+    void clear() { clear(rt); }
 
   private:
 
@@ -156,7 +148,6 @@ class splay_tree {
     */
     void clear(node* n)
     {
-        // throw std::logic_error("Not implemented");
         if(n->left!=nullptr) clear(n->left);
         else if(n->right!=nullptr) clear(n->right);
         else delete n;
