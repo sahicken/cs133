@@ -65,7 +65,35 @@ class splay_tree {
         assert(c->parent == p);
 
         // Remove the next line and add your code here.
-        throw std::logic_error("Not implemented");
+        // throw std::logic_error("Not implemented");
+        // Pivot = Root.OS
+        // Root.OS = Pivot.RS
+        // Pivot.RS = Root
+        // Root = Pivot
+        if (c==p->left) {
+            // rotate right
+            // Let c be p's left child.
+            // Set p's left child to be c's right child.
+            // [Set c's right-child's parent to p]
+            // Set c's right child to be p.
+            // [Set p's parent to c]
+            p->left=c->right;
+            c->right->parent=p;
+            c->right=p;
+            p->parent=c;
+        } else {
+            // rotate left
+            // Let c be p's right child.
+            // Set p's right child to be c's left child.
+            // [Set c's left-child's parent to p]
+            // Set c's left child to be p.
+            // [Set p's parent to c]
+            p->right=c->left;
+            c->left->parent=p;
+            c->left=p;
+            p->parent=c;
+        }
+
     }
 
     /* splay(n)
