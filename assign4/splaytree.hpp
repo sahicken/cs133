@@ -156,7 +156,10 @@ class splay_tree {
     */
     void clear(node* n)
     {
-        throw std::logic_error("Not implemented");
+        // throw std::logic_error("Not implemented");
+        if(n->left!=nullptr) clear(n->left);
+        else if(n->right!=nullptr) clear(n->right);
+        else delete n;
     }
 
     node* rt = nullptr;
