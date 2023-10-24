@@ -64,8 +64,6 @@ class splay_tree {
         assert(c == p->left or  c == p->right);
         assert(c->parent == p);
 
-        // Remove the next line and add your code here.
-        // throw std::logic_error("Not implemented");
         // Pivot = Root.OS
         // Root.OS = Pivot.RS
         // Pivot.RS = Root
