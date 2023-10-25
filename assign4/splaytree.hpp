@@ -121,36 +121,40 @@ public:
     {
         assert(n != nullptr);
 
-        while (n->parent)
+        if (n == nullptr)
         {
-            if (!n->parent->parent)
+            return nullptr;
+        }
+        while (n->parent != nullptr)
+        {
+            if (n->parent->parent == nullptr)
             {
                 if (n->parent->left == n)
-                    ;// right_rotate(n->parent);
+                {
+                    rotate(n, n->parent);
+                }
                 else
-                    ;// left_rotate(n->parent);
+                {
+                    rotate(n, n->parent);
+                }
             }
             else if (n->parent->left == n && n->parent->parent->left == n->parent)
             {
-                // right_rotate(n->parent->parent);
-                // right_rotate(n->parent);
+                rotate(n->parent, n->parent->parent);
+                rotate(n, n->parent);
             }
             else if (n->parent->right == n && n->parent->parent->right == n->parent)
             {
-                // left_rotate(n->parent->parent);
-                // left_rotate(n->parent);
-            }
-            else if (n->parent->left == n && n->parent->parent->right == n->parent)
-            {
-                // right_rotate(n->parent);
-                // left_rotate(n->parent);
+                rotate(n->parent, n->parent->parent);
+                rotate(n, n->parent);
             }
             else
             {
-                // left_rotate(n->parent);
-                // right_rotate(n->parent);
+                rotate(n, n->parent);
+                rotate(n, n->parent);
             }
         }
+        return n;
     }
 
     /* find(k)
