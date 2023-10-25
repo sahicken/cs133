@@ -70,24 +70,22 @@ class splay_tree {
         // Root = Pivot
         if (c==p->left) {
             // rotate right
-            // Let c be p's left child.
-            // Set p's left child to be c's right child.
-            // [Set c's right-child's parent to p]
-            // Set c's right child to be p.
-            // [Set p's parent to c]
             p->left=c->right;
-            c->right->parent=p;
+            if(c->right!=nullptr) c->right->parent=p;
+            c->parent=p->parent;
+            if(p->parent==nullptr) p->parent=c;
+            else if (p==p->parent->right) p->parent->right=c;
+            else p->parent->left=c;
             c->right=p;
             p->parent=c;
         } else {
             // rotate left
-            // Let c be p's right child.
-            // Set p's right child to be c's left child.
-            // [Set c's left-child's parent to p]
-            // Set c's left child to be p.
-            // [Set p's parent to c]
             p->right=c->left;
-            c->left->parent=p;
+            if(c->left!=nullptr) c->left->parent=p;
+            c->parent=p->parent;
+            if(p->parent==nullptr) p->parent=c;
+            else if (p==p->parent->left) p->parent->left=c;
+            else p->parent->right=c;
             c->left=p;
             p->parent=c;
         }
