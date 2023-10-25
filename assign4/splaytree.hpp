@@ -174,9 +174,10 @@ class splay_tree {
     */
     void clear(node* n)
     {
-        if(n->left!=nullptr) clear(n->left);
-        else if(n->right!=nullptr) clear(n->right);
-        else delete n;
+        if (n==nullptr) return;
+        clear(n->left);
+        clear(n->right);
+        delete n;
     }
 
     node* rt = nullptr;
