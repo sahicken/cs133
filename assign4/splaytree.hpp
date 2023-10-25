@@ -168,10 +168,22 @@ public:
 
        Runs in O(log n) amortized time.
     */
-    node *find(int k) // TODO impl, iter
+    node *find(int k)
     {
-        // Remove the next line and add your code here.
-        throw std::logic_error("Not implemented");
+        auto n = rt;
+        if (empty()) return nullptr;
+        while (n->left != nullptr || n->right != nullptr)
+        {
+            if (k == n->key)
+            { // found
+                splay(n);
+                return n;
+            }
+            else if (k > n->key) n = n->right;
+            else n = n->left;
+        }
+        splay(n);
+        return nullptr;
     }
 
     /* insert(k)
@@ -183,8 +195,25 @@ public:
     */
     node *insert(int k) // TODO impl, iter
     {
-        // Remove the next line and add your code here.
-        throw std::logic_error("Not implemented");
+        if (empty()) set_root(new node(k, nullptr, nullptr, nullptr));
+        else
+        {
+            auto n = rt;
+            while (n->left != nullptr || n->right != nullptr)
+            {
+                if (k == n->key)
+                { // already exist
+                    splay(n);
+                    return rt;
+                }
+                else if (k > n->key) n = n->right;
+                else n = n->left;
+            }
+            if (k < n->key) n->right = new node(k, nullptr, nullptr, n);
+            else n->right = new node(k, nullptr, nullptr, n);
+            splay(n);
+            return n;
+        }
     }
 
     /* remove(k)
