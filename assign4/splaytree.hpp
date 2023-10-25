@@ -164,7 +164,7 @@ public:
 
        Runs in O(log n) amortized time.
     */
-    node *find(int k)
+    node *find(int k) // TODO impl, iter
     {
         // Remove the next line and add your code here.
         throw std::logic_error("Not implemented");
@@ -177,7 +177,7 @@ public:
 
        Runs in O(log n) amortized time.
     */
-    node *insert(int k)
+    node *insert(int k) // TODO impl, iter
     {
         // Remove the next line and add your code here.
         throw std::logic_error("Not implemented");
@@ -191,7 +191,7 @@ public:
 
        Runs in O(log n) amortized time.
     */
-    node *remove(int k)
+    node *remove(int k) // TODO impl
     {
         // If you want to do the extra credit problem, remove the next line.
         throw std::logic_error("Not implemented");
