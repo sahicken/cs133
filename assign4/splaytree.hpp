@@ -173,11 +173,12 @@ public:
         auto n = rt;
         if (empty())
             return nullptr;
-        while (n->left != nullptr || n->right != nullptr)
+        while (n!=nullptr)
         {
             if (k == n->key)
             { // found
                 splay(n);
+                set_root(n);
                 return n;
             }
             else if (k > n->key)
@@ -185,8 +186,6 @@ public:
             else
                 n = n->left;
         }
-        splay(n);
-        return nullptr;
     }
 
     /* insert(k)
