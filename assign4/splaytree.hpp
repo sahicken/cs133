@@ -171,7 +171,8 @@ public:
     node *find(int k)
     {
         auto n = rt;
-        if (empty()) return nullptr;
+        if (empty())
+            return nullptr;
         while (n->left != nullptr || n->right != nullptr)
         {
             if (k == n->key)
@@ -179,8 +180,10 @@ public:
                 splay(n);
                 return n;
             }
-            else if (k > n->key) n = n->right;
-            else n = n->left;
+            else if (k > n->key)
+                n = n->right;
+            else
+                n = n->left;
         }
         splay(n);
         return nullptr;
@@ -193,26 +196,59 @@ public:
 
        Runs in O(log n) amortized time.
     */
-    node *insert(int k) // TODO impl, iter
+    node *insert(int k)
     {
-        if (empty()) set_root(new node(k, nullptr, nullptr, nullptr));
+        if (rt == nullptr)
+        {
+            node *n = new node{
+                k,
+                nullptr,
+                nullptr,
+                nullptr,
+            };
+            rt = n;
+
+            return rt;
+        }
         else
         {
-            auto n = rt;
-            while (n->left != nullptr || n->right != nullptr)
+            node *p = rt;
+            while (p != nullptr)
             {
-                if (k == n->key)
-                { // already exist
-                    splay(n);
+                if (k == p->key)
+                {
+                    rt = splay(p);
                     return rt;
                 }
-                else if (k > n->key) n = n->right;
-                else n = n->left;
+                else if (k < p->key and p->left != nullptr)
+                {
+
+                    p = p->left;
+                }
+                else if (k > p->key and p->right != nullptr)
+                {
+
+                    p = p->right;
+                }
+                else if (k < p->key and p->left == nullptr)
+                {
+
+                    node *n = new node{k, nullptr, nullptr, p};
+                    p->left = n;
+                    rt = splay(n);
+
+                    return rt;
+                }
+                else if (k > p->key and p->right == nullptr)
+                {
+
+                    node *n = new node{k, nullptr, nullptr, p};
+                    p->right = n;
+                    rt = splay(n);
+
+                    return rt;
+                }
             }
-            if (k < n->key) n->right = new node(k, nullptr, nullptr, n);
-            else n->right = new node(k, nullptr, nullptr, n);
-            splay(n);
-            return n;
         }
     }
 
