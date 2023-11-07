@@ -173,7 +173,7 @@ public:
         auto n = rt;
         if (empty())
             return nullptr;
-        while (n!=nullptr)
+        while (n != nullptr)
         {
             if (k == n->key)
             { // found
@@ -259,10 +259,46 @@ public:
 
        Runs in O(log n) amortized time.
     */
-    node *remove(int k) // TODO impl
+    node *remove(int k)
     {
-        // If you want to do the extra credit problem, remove the next line.
-        throw std::logic_error("Not implemented");
+        // Find node to remove and delete it, tracking left an right subtrees
+        // of deleted node.
+        node *n = find(k);           // n is rt after splay
+        node *left_Tree = n->left;   // left subtree of rt
+        node *right_Tree = n->right; // right subtree of rt
+
+        // Conditions for Deletion and joining subtrees
+        if (left_Tree == nullptr and right_Tree != nullptr)
+        {
+            // left subtree is empty
+            delete n;
+            right_Tree->parent = nullptr;
+            rt = right_Tree;
+        }
+        else if (left_Tree != nullptr and right_Tree == nullptr)
+        {
+            // right subtree is empty
+            delete n;
+            left_Tree->parent = nullptr;
+            rt = left_Tree;
+        }
+        else if (left_Tree != nullptr and right_Tree != nullptr)
+        {
+            // node to delete has two children
+            delete n;
+            auto tmp = left_Tree;
+            while (tmp->right != nullptr)
+                tmp = tmp->right;
+            rt = splay(tmp);
+            rt->right = right_Tree;
+            right_Tree->parent = rt;
+            rt->parent = nullptr;
+        }
+        else if (left_Tree == nullptr and right_Tree == nullptr)
+
+            rt = nullptr;
+
+        return rt;
     }
 
     /* set_root(n)
