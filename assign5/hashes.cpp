@@ -2,22 +2,15 @@
 in the system’s dictionary. This is located in /usr/share/dict/words */
 
 #include <cstdint>
+#include <cmath>
 #include <string>
 #include <boost/math/distributions/chi_squared.hpp>
 
-uint16_t x; // x has exactly 16 bits, and is unsigned
-
 // String length (modulo 2^16)
-uint16_t hash1(const std::string &s)
-{
-    return s.size() % 65536;
-}
+uint16_t hash1(const std::string &s) { return s.size() % 65536; }
 
 // First character
-uint16_t hash2(const std::string &s)
-{
-    return s.at(0);
-}
+uint16_t hash2(const std::string &s) { return s.at(0); }
 
 // additive checksum (add all characters together), modulo 2^16
 uint16_t hash3(const std::string &s)
@@ -41,9 +34,7 @@ uint16_t hash4(const std::string &s)
 {
     uint16_t sum = 0;
     for (int i = 0; i < s.size(); ++i)
-    {
         sum = (sum * 256 + s[i]) % 65413;
-    }
     return sum;
 }
 
@@ -52,6 +43,11 @@ notes). Again, remember that you can’t just use the final sum; you have
 to incorporate the multiplicative calculation into hashing loop.*/
 uint16_t hash5(const std::string &s)
 {
+    float k = 0;
+    float A = (sqrt(5)-1)/2;
+    for (int i = 0; i<s.size(); ++i)
+        k=std::fmod((k*256+(s[i]))*A,1);
+    return floor(k*65413);
 }
 
 int main()
