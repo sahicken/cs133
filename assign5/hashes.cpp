@@ -1,8 +1,10 @@
 /* Your input will be strings, in fact, all the strings that are defined
 in the system’s dictionary. This is located in /usr/share/dict/words */
 
-#include <cstdint>
 #include <cmath>
+#include <iostream>
+#include <fstream>
+#include <vector>
 #include <string>
 #include <boost/math/distributions/chi_squared.hpp>
 
@@ -50,7 +52,45 @@ uint16_t hash5(const std::string &s)
     return floor(k*65413);
 }
 
+
+
 int main()
 {
+    // Create an input stream object to open the file
+    std::ifstream file("/usr/share/dict/words");
+
+    // Check if the file is opened successfully
+    if (file.is_open())
+    {
+        // Create a vector of strings to store the words
+        std::vector<std::string> words;
+
+        // Create a string variable to store each word
+        std::string word;
+
+        // Read the file word by word until the end of the file
+        while (file >> word)
+        {
+            // Add the word to the vector
+            words.push_back(word);
+        }
+
+        // Close the file
+        file.close();
+
+        // Print the size and the contents of the vector
+        std::cout << "The vector has " << words.size() << " words.\n";
+        std::cout << "The words are:\n";
+        for (const auto& w : words)
+        {
+            std::cout << w << "\n";
+        }
+    }
+    else
+    {
+        // Print an error message if the file cannot be opened
+        std::cerr << "Unable to open the file.\n";
+    }
+
     return 0;
 }
