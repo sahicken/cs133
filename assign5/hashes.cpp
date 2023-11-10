@@ -46,13 +46,11 @@ to incorporate the multiplicative calculation into hashing loop.*/
 uint16_t hash5(const std::string &s)
 {
     float k = 0;
-    float A = (sqrt(5)-1)/2;
-    for (int i = 0; i<s.size(); ++i)
-        k=std::fmod((k*256+(s[i]))*A,1);
-    return floor(k*65413);
+    float A = (sqrt(5) - 1) / 2;
+    for (int i = 0; i < s.size(); ++i)
+        k = std::fmod((k * 256 + (s[i])) * A, 1);
+    return floor(k * 65413);
 }
-
-
 
 int main()
 {
@@ -78,13 +76,38 @@ int main()
         // Close the file
         file.close();
 
-        // Print the size and the contents of the vector
-        std::cout << "The vector has " << words.size() << " words.\n";
-        std::cout << "The words are:\n";
-        for (const auto& w : words)
+        std::vector<std::vector<int>> hashes(5);
+
+        for (const auto &w : words)
         {
-            std::cout << w << "\n";
+            hashes[0].push_back(hash1(w));
+            hashes[1].push_back(hash2(w));
+            hashes[2].push_back(hash3(w));
+            hashes[3].push_back(hash4(w));
+            hashes[4].push_back(hash5(w));
         }
+
+        float expected = words.size() / 65536;
+        std::vector<float> c2(5);
+        for (int i = 0; i < hashes.size(); ++i)
+        {
+            c2[i] = 0;
+            for (int j = 0; j < hashes[i].size(); ++j)
+            {
+                c2[i] += (expected - hashes[i][j]) *
+                         (expected - hashes[i][j]) / expected;
+            }
+        }
+
+        boost::math::chi_squared c2d(65535.0);
+
+        float p1 = boost::math::cdf(c2d, c2[0]);
+        float p2 = boost::math::cdf(c2d, c2[1]);
+        float p3 = boost::math::cdf(c2d, c2[2]);
+        float p4 = boost::math::cdf(c2d, c2[3]);
+        float p5 = boost::math::cdf(c2d, c2[4]);
+
+        std::cout << p1 << p2 << p3 << p4 << p5 << std::endl;
     }
     else
     {
