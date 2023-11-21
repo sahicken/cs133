@@ -43,7 +43,9 @@ public:
     */
     ~disjoint_set()
     {
-        // Your code here
+        for (auto i = 0; i < this->elem_count(); ++i)
+            delete forest[i];
+        delete[] forest;
     }
 
     /* disjoint_set d = c;
