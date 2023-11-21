@@ -53,7 +53,10 @@ public:
     */
     disjoint_set(const disjoint_set &original)
     {
-        // Your code here
+        total_elems = original.elem_count();
+        forest = new node *[original.elem_count()];
+        for (auto i = 0; i < original.elem_count(); ++i)
+            forest[i] = new node{original.rep(i), nullptr, 0};
     }
 
     /* d = c;
