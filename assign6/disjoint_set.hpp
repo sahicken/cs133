@@ -31,9 +31,8 @@ public:
     /* djsoint_set(n)
        Constructs a disjoint_set object with (initially) n disjoint sets.
     */
-    disjoint_set(int elem_count)
+    disjoint_set(int elem_count) : total_elems(elem_count)
     {
-        total_elems = elem_count;
         forest = new node *[this->elem_count()];
         for (auto i = 0; i < this->elem_count(); ++i)
             forest[i] = new node{i, nullptr, 0};
