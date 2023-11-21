@@ -33,8 +33,9 @@ public:
     */
     disjoint_set(int elem_count)
     {
-        forest = new node *[elem_count];
-        for (auto i = 0; i < elem_count; ++i)
+        total_elems = elem_count;
+        forest = new node *[this->elem_count()];
+        for (auto i = 0; i < this->elem_count(); ++i)
             forest[i] = new node{i, nullptr, 0};
     }
 
@@ -70,11 +71,7 @@ public:
 
        Must run in O(1) time.
     */
-    int elem_count() const
-    {
-        // Your code here; delete the following line when you're ready to test.
-        throw not_implemented{};
-    }
+    int elem_count() const { return total_elems; }
 
     /* set_count()
        Returns the number of disjoint sets that *currently* exist. Initially,
