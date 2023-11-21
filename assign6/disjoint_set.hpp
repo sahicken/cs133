@@ -1,5 +1,5 @@
 #pragma once
-/* 
+/*
  * disjoint_set.hpp
  */
 #include <cassert>
@@ -8,28 +8,34 @@
 /* not_implemented
    Thrown by functions/methods you haven't written yet, this exception signals
    to the test runner to skip any tests involving the relevant functions/
-   methods. When you write a function/method, delete the 
+   methods. When you write a function/method, delete the
 
      throw not_implemented{};
 
    from it.
 */
-struct not_implemented { };
+struct not_implemented
+{
+};
 
-class disjoint_set {
-    struct node {
-        int index;     // Set index
-        node* parent;  // Parent set (-1 for roots)
+class disjoint_set
+{
+    struct node
+    {
+        int index;    // Set index
+        node *parent; // Parent set (-1 for roots)
         int rank = 0;
     };
 
-  public:
+public:
     /* djsoint_set(n)
        Constructs a disjoint_set object with (initially) n disjoint sets.
     */
-    disjoint_set(int elem_count) 
+    disjoint_set(int elem_count)
     {
-        // Your code here
+        forest = new node *[elem_count];
+        for (auto i = 0; i < elem_count; ++i)
+            forest[i] = new node{i, nullptr, 0};
     }
 
     /* ~disjoint_set()
@@ -43,7 +49,7 @@ class disjoint_set {
     /* disjoint_set d = c;
        Copy constructor.
     */
-    disjoint_set(const disjoint_set& original)
+    disjoint_set(const disjoint_set &original)
     {
         // Your code here
     }
@@ -51,7 +57,7 @@ class disjoint_set {
     /* d = c;
        Copy-assignment operator.
     */
-    disjoint_set& operator= (const disjoint_set& original)
+    disjoint_set &operator=(const disjoint_set &original)
     {
         // Your code here
 
@@ -70,7 +76,7 @@ class disjoint_set {
         throw not_implemented{};
     }
 
-    /* set_count() 
+    /* set_count()
        Returns the number of disjoint sets that *currently* exist. Initially,
        this will be the same as `size()`, but it shrinks each time sets are
        merged (eventually to a minimum of 1, if all sets are merged). This is
@@ -80,7 +86,7 @@ class disjoint_set {
        sets have been merged together) or greater than the original `elem_count`
        (if no sets have been merged).
 
-       Must run in O(N) time where N = `elem_count()`, but there is an 
+       Must run in O(N) time where N = `elem_count()`, but there is an
        optimization which can make this run in O(1) time...
     */
     int set_count() const
@@ -90,7 +96,7 @@ class disjoint_set {
     }
 
     /* singleton()
-       Returns true if all elements are in the same set (i.e., if 
+       Returns true if all elements are in the same set (i.e., if
        `set_count() == 1`).
     */
     bool singleton() const
@@ -99,7 +105,7 @@ class disjoint_set {
         throw not_implemented{};
     }
 
-    /* rep(n)  
+    /* rep(n)
        Returns the "representative" for set n. n must be ≥ 0 and < `elem_count()`.
 
        This should perform path compression.
@@ -129,10 +135,10 @@ class disjoint_set {
     }
 
     /* in_same_set(a,b)
-       Returns true if a and b are in the same set. Note that a and b are 
+       Returns true if a and b are in the same set. Note that a and b are
        not necessarily the roots of their sets!
 
-       Must run in O(M + N) time, where M and N are the sizes of the sets 
+       Must run in O(M + N) time, where M and N are the sizes of the sets
        containing a and b, respectively.
     */
     bool in_same_set(int a, int b)
@@ -154,8 +160,8 @@ class disjoint_set {
        Returns true if two sets were merged, and false if not (i.e., if a and
        b were already in the same set).
 
-       Must run in O(M + N) time, where M is the size of a's set and N is the 
-       size of b's set. (The amortized runtime will be O(α(N)) which is 
+       Must run in O(M + N) time, where M is the size of a's set and N is the
+       size of b's set. (The amortized runtime will be O(α(N)) which is
        essentially O(1).)
     */
     bool merge(int a, int b)
@@ -181,9 +187,9 @@ class disjoint_set {
         throw not_implemented{};
     }
 
-  private:
+private:
     // Array of nodes; initialize in your constructor
-    node** forest = nullptr;
+    node **forest = nullptr;
 
     // Total number of elements. This should be set in your constructor and then
     // never changed after that.
