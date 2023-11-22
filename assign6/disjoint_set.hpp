@@ -92,19 +92,18 @@ public:
     */
     int set_count() const
     {
-        // Your code here; delete the following line when you're ready to test.
-        throw not_implemented{};
+        auto count = 0;
+        for (auto i = 0; i < this->elem_count(); ++i)
+            if (forest[i]->parent == nullptr)
+                ++count;
+        return count;
     }
 
     /* singleton()
        Returns true if all elements are in the same set (i.e., if
        `set_count() == 1`).
     */
-    bool singleton() const
-    {
-        // Your code here; delete the following line when you're ready to test.
-        throw not_implemented{};
-    }
+    bool singleton() const { return set_count()==1; }
 
     /* rep(n)
        Returns the "representative" for set n. n must be ≥ 0 and < `elem_count()`.
