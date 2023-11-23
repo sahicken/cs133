@@ -53,6 +53,8 @@ public:
     */
     disjoint_set(const disjoint_set &original)
     {
+        throw not_implemented{};
+
         total_elems = original.elem_count();
         forest = new node *[original.elem_count()];
         for (auto i = 0; i < original.elem_count(); ++i)
@@ -64,6 +66,7 @@ public:
     */
     disjoint_set &operator=(const disjoint_set &original)
     {
+        throw not_implemented{};
         // Your code here
 
         return *this;
@@ -160,8 +163,8 @@ public:
     {
         assert(a >= 0 and a < elem_count());
         assert(b >= 0 and b < elem_count());
-        
-        return rep(a)==rep(b);
+
+        return rep(a) == rep(b);
     }
 
     /* merge(a,b)
@@ -206,8 +209,12 @@ public:
     {
         assert(n >= 0 and n < elem_count());
 
-        // Your code here; delete the following line when you're ready to test.
-        throw not_implemented{};
+        std::vector<int> e;
+        auto temp = rep(n);
+        for (int i = 0; i < elem_count(); ++i)
+            if (temp == rep(i))
+                e.push_back(i);
+        return e;
     }
 
 private:
