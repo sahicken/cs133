@@ -142,8 +142,11 @@ public:
     {
         assert(n >= 0 and n < elem_count());
 
-        // Your code here; delete the following line when you're ready to test.
-        throw not_implemented{};
+        node *r = forest[n];
+
+        // find the root of e's tree
+        while (r->parent != nullptr)
+            r = r->parent;
     }
 
     /* in_same_set(a,b)
@@ -181,8 +184,17 @@ public:
         assert(a >= 0 and a < elem_count());
         assert(b >= 0 and b < elem_count());
 
-        // Your code here; delete the following line when you're ready to test.
-        throw not_implemented{};
+        a = rep(a);
+        b = rep(b);
+
+        if (a == b)
+            return false; // same group
+        if (forest[b]->rank > forest[a]->rank)
+            std::swap(a, b); // a always has higher rank
+
+        forest[b]->parent = forest[a]; // b becomes child of a
+        forest[a]->rank = std::max(forest[a]->rank, forest[b]->rank) + 1;
+        return true;
     }
 
     /* elements(n)
