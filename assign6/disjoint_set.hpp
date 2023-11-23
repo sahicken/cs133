@@ -103,7 +103,7 @@ public:
        Returns true if all elements are in the same set (i.e., if
        `set_count() == 1`).
     */
-    bool singleton() const { return set_count()==1; }
+    bool singleton() const { return set_count() == 1; }
 
     /* rep(n)
        Returns the "representative" for set n. n must be ≥ 0 and < `elem_count()`.
@@ -117,8 +117,20 @@ public:
     {
         assert(n >= 0 and n < elem_count());
 
-        // Your code here; delete the following line when you're ready to test.
-        throw not_implemented{};
+        node *r = forest[n];
+
+        // find the root of e's tree
+        while (r->parent != nullptr)
+            r = r->parent;
+
+        // path compression
+        node *temp = forest[n];
+        while (temp != r)
+        {
+            node *p = temp->parent;
+            temp->parent = r;
+            temp = p;
+        }
     }
 
     /* rep(n) const
