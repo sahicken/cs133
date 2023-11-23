@@ -160,9 +160,8 @@ public:
     {
         assert(a >= 0 and a < elem_count());
         assert(b >= 0 and b < elem_count());
-
-        // Your code here; delete the following line when you're ready to test.
-        throw not_implemented{};
+        
+        return rep(a)==rep(b);
     }
 
     /* merge(a,b)
