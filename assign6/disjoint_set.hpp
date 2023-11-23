@@ -22,8 +22,8 @@ class disjoint_set
 {
     struct node
     {
-        int index;    // Set index
-        node *parent; // Parent set (-1 for roots)
+        int index;         // Set index
+        node *parent = nullptr; // Parent set (-1 for roots)
         int rank = 0;
     };
 
@@ -35,7 +35,10 @@ public:
     {
         forest = new node *[this->elem_count()];
         for (auto i = 0; i < this->elem_count(); ++i)
-            forest[i] = new node{i, nullptr, 0};
+        {
+            forest[i] = new node();
+            forest[i]->index = i;
+        }
     }
 
     /* ~disjoint_set()
@@ -57,8 +60,10 @@ public:
 
         total_elems = original.elem_count();
         forest = new node *[original.elem_count()];
-        for (auto i = 0; i < original.elem_count(); ++i)
-            forest[i] = new node{original.rep(i), nullptr, 0};
+        for (auto i = 0; i < original.elem_count(); ++i) {
+            forest[i] = new node();
+            forest[i]->index = original.rep(i);
+        }
     }
 
     /* d = c;
