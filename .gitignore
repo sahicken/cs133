@@ -10,3 +10,5 @@ assign5/a.out
 assign6/assign6_test
 assign6/assign6_test.o
 assign6/a.out
+assign5/hashes
+.gitignore
