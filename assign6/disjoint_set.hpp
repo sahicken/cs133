@@ -56,8 +56,6 @@ public:
     */
     disjoint_set(const disjoint_set &original)
     {
-        throw not_implemented{};
-
         total_elems = original.elem_count();
         forest = new node *[original.elem_count()];
         for (auto i = 0; i < original.elem_count(); ++i)
@@ -72,8 +70,13 @@ public:
     */
     disjoint_set &operator=(const disjoint_set &original)
     {
-        throw not_implemented{};
-        // Your code here
+        total_elems = original.elem_count();
+        forest = new node *[original.elem_count()];
+        for (auto i = 0; i < original.elem_count(); ++i)
+        {
+            forest[i] = new node();
+            forest[i]->index = original.rep(i);
+        }
 
         return *this;
     }
@@ -158,7 +161,7 @@ public:
         // find the root of e's tree
         while (r->parent != nullptr)
             r = r->parent;
-        
+
         return r->index;
     }
 
