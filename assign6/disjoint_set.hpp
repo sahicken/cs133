@@ -141,7 +141,7 @@ public:
             temp = p;
         }
 
-        return true;
+        return r->index;
     }
 
     /* rep(n) const
@@ -159,7 +159,7 @@ public:
         while (r->parent != nullptr)
             r = r->parent;
         
-        return true;
+        return r->index;
     }
 
     /* in_same_set(a,b)
