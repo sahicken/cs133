@@ -22,7 +22,7 @@ class disjoint_set
 {
     struct node
     {
-        int index;         // Set index
+        int index;              // Set index
         node *parent = nullptr; // Parent set (-1 for roots)
         int rank = 0;
     };
@@ -60,7 +60,8 @@ public:
 
         total_elems = original.elem_count();
         forest = new node *[original.elem_count()];
-        for (auto i = 0; i < original.elem_count(); ++i) {
+        for (auto i = 0; i < original.elem_count(); ++i)
+        {
             forest[i] = new node();
             forest[i]->index = original.rep(i);
         }
@@ -139,6 +140,8 @@ public:
             temp->parent = r;
             temp = p;
         }
+
+        return true;
     }
 
     /* rep(n) const
@@ -155,6 +158,8 @@ public:
         // find the root of e's tree
         while (r->parent != nullptr)
             r = r->parent;
+        
+        return true;
     }
 
     /* in_same_set(a,b)
