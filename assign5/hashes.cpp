@@ -45,11 +45,11 @@ notes). Again, remember that you can’t just use the final sum; you have
 to incorporate the multiplicative calculation into hashing loop.*/
 uint16_t hash5(const std::string &s)
 {
-    float k = 0;
-    float A = (sqrt(5) - 1) / 2;
+    double k = 0;
+    double A = (sqrt(5) - 1) / 2;
     for (int i = 0; i < s.size(); ++i)
         k = std::fmod((k * 256 + (s[i])) * A, 1);
-    return floor(k * 65413);
+    return floor(k * 65536);
 }
 
 int main()
@@ -75,23 +75,25 @@ int main()
 
         // Close the file
         file.close();
-
-        std::vector<std::vector<int>> hashes(5);
+        
+        std::vector<std::vector<float>> hashes(
+            5,
+            std::vector<float>(65536, 0));
 
         for (const auto &w : words)
         {
-            hashes[0].push_back(hash1(w));
-            hashes[1].push_back(hash2(w));
-            hashes[2].push_back(hash3(w));
-            hashes[3].push_back(hash4(w));
-            hashes[4].push_back(hash5(w));
+            hashes[0].at(hash1(w))++;
+            hashes[1].at(hash2(w))++;
+            hashes[2].at(hash3(w))++;
+            hashes[3].at(hash4(w))++;
+            hashes[4].at(hash5(w))++;
         }
 
-        float expected = words.size() / 65536;
-        std::vector<float> c2(5);
+        float expected = words.size() / 65536.0;
+        std::vector<float> c2(5, 0);
         for (int i = 0; i < hashes.size(); ++i)
         {
-            c2[i] = 0;
+            c2[i] = 0.0;
             for (int j = 0; j < hashes[i].size(); ++j)
             {
                 c2[i] += (expected - hashes[i][j]) *
@@ -107,7 +109,7 @@ int main()
         float p4 = boost::math::cdf(c2d, c2[3]);
         float p5 = boost::math::cdf(c2d, c2[4]);
 
-        std::cout << p1 << p2 << p3 << p4 << p5 << std::endl;
+        std::cout << p1 << ", " << p2 << ", " << p3 << ", " << p4 << ", " << p5 << std::endl;
     }
     else
     {
