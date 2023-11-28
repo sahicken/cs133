@@ -199,16 +199,23 @@ public:
         assert(a >= 0 and a < elem_count());
         assert(b >= 0 and b < elem_count());
 
-        a = rep(a);
-        b = rep(b);
+        if (rep(a) == rep(b))
+            return false;
 
-        if (a == b)
-            return false; // same group
-        if (forest[b]->rank > forest[a]->rank)
-            std::swap(a, b); // a always has higher rank
-
-        forest[b]->parent = forest[a]; // b becomes child of a
-        forest[a]->rank = std::max(forest[a]->rank, forest[b]->rank) + 1;
+        if (forest[a]->rank < forest[b]->rank)
+        {
+            forest[rep(a)]->parent = forest[rep(b)];
+            forest[a]->rank = forest[rep(b)]->rank;
+        }
+        else if (forest[a]->rank > forest[b]->rank)
+        {
+            forest[rep(b)]->parent = forest[rep(a)];
+        }
+        else if (forest[a]->rank == forest[b]->rank)
+        {
+            forest[rep(b)]->parent = forest[rep(a)];
+            forest[a]->rank++;
+        }
         return true;
     }
 
